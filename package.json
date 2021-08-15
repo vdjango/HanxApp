@@ -1,0 +1,16 @@
+{
+  "name": "hanfuapp-master",
+  "version": "1.0.0",
+  "description": "- <b>简体中文</b> - [English]()",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "es6-promise": "^4.2.8",
+    "uview-ui": "^1.8.4",
+    "vuex": "^3.6.2"
+  }
+}

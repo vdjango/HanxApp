@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-card": "/node-modules/uview-ui/components/u-card/u-card",
+    "u-icon": "/node-modules/uview-ui/components/u-icon/u-icon",
+    "u-number-box": "/node-modules/uview-ui/components/u-number-box/u-number-box",
+    "u-modal": "/node-modules/uview-ui/components/u-modal/u-modal",
+    "u-skeleton": "/node-modules/uview-ui/components/u-skeleton/u-skeleton",
+    "x-tabber": "/components/tabber/index"
+  }
+}
