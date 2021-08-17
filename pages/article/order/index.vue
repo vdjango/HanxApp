@@ -57,6 +57,22 @@
 		<u-modal v-model="pay_success" @confirm="pay_confirm" content="已成功购票，后续请留意主页票务选项（后期增加）" title="成功" confirm-text="完成">
 		</u-modal>
 		
+		<u-modal v-model="userInfoText.loading" @confirm="confirmUserInfo" :async-close="true" ref="uModalUserInfo">
+			<view class="slot-content">
+				<u-form :model="userInfoText" ref="uForm">
+						<u-form-item label="姓名" prop="full_name">
+							<u-input v-model="userInfoText.full_name" />
+						</u-form-item>
+						<u-form-item label="身份证号" prop="certificates_no">
+							<u-input v-model="userInfoText.certificates_no" placeholder="请确保身份证号正确" />
+						</u-form-item>
+						<u-form-item label="手机号" prop="mobile">
+							<u-input v-model="userInfoText.mobile" placeholder="请确保手机号正确" />
+						</u-form-item>
+					</u-form>
+			</view>
+		</u-modal>
+		
 		<x-tabber v-if="user.openid" name="下单" :skeleton="loading" @enroll="confirm"></x-tabber>
 		<x-tabber v-else name="请先登陆" :skeleton="loading" @enroll="getUserInfo"></x-tabber>
 
@@ -83,6 +99,7 @@
 				specSelected: {
 					number: 1,
 					data: {
+						id: null,
 						money: 0
 					}
 				},
@@ -100,6 +117,39 @@
 					token: null,
 					userid: null,
 					openid: null
+				},
+				userInfoText: {
+					loading: false,
+					full_name: null,
+					certificates_no: null,
+					mobile: null
+				},
+				rules: {
+					full_name: [
+						{ 
+							required: true, 
+							message: '请输入姓名', 
+							// 可以单个或者同时写两个触发验证方式 
+							trigger: ['change','blur'],
+						}
+					],
+					certificates_no: [
+						{ 
+							required: true, 
+							message: '请输入身份证号', 
+							// 可以单个或者同时写两个触发验证方式 
+							trigger: ['change','blur'],
+						}
+					],
+					mobile: [
+						{ 
+							required: true, 
+							message: '请输入手机号', 
+							// 可以单个或者同时写两个触发验证方式 
+							trigger: ['change','blur'],
+						}
+					],
+
 				},
 				pay_: false,
 				pay_cancel: true,
@@ -144,6 +194,33 @@
 			this.UserInfo.nickName = user.nickName
 			this.UserInfo.province = user.province
 			
+			axios.userInfo('GET', {
+				user: this.user.userid
+			}).then((response) => {
+				console.log('验证通过', response)
+				if(response.results.length < 1){
+					uni.showToast({
+						title: '请添加用户信息'
+					})
+					setTimeout(() => {
+						this.userInfoText.loading = true
+					}, 100)
+				} else {
+					uni.showToast({
+						title: '获取用户信息成功'
+					})
+				}
+				
+			}).catch(()=>{
+				uni.showToast({
+					title: '获取用户信息失败。'
+				});
+			}).finally(()=>{
+			})
+			
+		},
+		onReady() {
+			this.$refs.uForm.setRules(this.rules);
 		},
 		components: {
 			"x-tabber": xtabber
@@ -167,6 +244,44 @@
 				this.pay_ = true
 				this.pay_context = '票种：' + this.specSelected.data.name + '<br> 数量：' + this.specSelected.number + '张<br> 价格：' + this.money_tole(this.specSelected.data.money) * this.specSelected.number + '元'
 			},
+			confirmUserInfo(){
+				/**
+				 * 提交用户资料
+				 */
+				this.$refs.uForm.validate(valid => {
+					if (valid) {
+						uni.showLoading({
+						    title: '加载中'
+						})
+						axios.userInfo('POST', {
+							user: this.user.userid,
+							full_name: this.userInfoText.full_name,
+							certificates_no: this.userInfoText.certificates_no,
+							mobile: this.userInfoText.mobile
+						}).then((response) => {
+							console.log('验证通过')
+							uni.showToast({
+								title: '用户信息添加成功'
+							})
+						}).catch(()=>{
+							uni.showToast({
+								title: '用户信息添加失败，请不要购票。'
+							});
+						}).finally(()=>{
+							setTimeout(() => {
+								this.userInfoText.loading = false
+								this.$refs.uModalUserInfo.clearLoading();
+								uni.hideLoading();
+							}, 100)
+						})
+					} else {
+						console.log('验证失败');
+						this.$refs.uModalUserInfo.clearLoading();
+					}
+				});
+							
+				
+			},
 			pay_confirm(){
 				uni.navigateBack({
 				    delta: 1,
@@ -181,6 +296,7 @@
 					axios.paymentPay('POST', {
 						userid: this.user.userid, 
 						openid: this.user.openid, 
+						trade_no: this.specSelected.data.id,
 						money: this.specSelected.data.money,
 						name: this.specSelected.data.name,
 						number: this.specSelected.number

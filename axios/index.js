@@ -10,7 +10,8 @@ import {
     activityAMap,
     activityTicket,
 	paymentPay,
-	wechatAuthCode2
+	wechatAuthCode2,
+	userInfo
 } from './restful'
 
 const request = axios();
@@ -119,6 +120,18 @@ export default {
 		 */
 		wechatAuthCode2: function (method = 'GET', data = {}, index = null, pagination = {}) {
 		    return Axios(wechatAuthCode2(index), method, this.Data(data, pagination))
+		},
+		
+		/**
+		 * 用户信息
+		 * @param method 请求方式
+		 * @param data 请求数据
+		 * @param index 数据索引
+		 * @param pagination 分页器
+		 * @returns {Promise<unknown>}
+		 */
+		userInfo: function (method = 'GET', data = {}, index = null, pagination = {}) {
+		    return Axios(userInfo(index), method, this.Data(data, pagination))
 		},
 	    /**
 	     * 活动信息

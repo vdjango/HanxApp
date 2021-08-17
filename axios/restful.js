@@ -22,13 +22,14 @@ const auth = {
     authorizationVerify: '/account/authorization-verify/',
     authorizationRegister: '/account/authorization-register/',
 	wechat_auth_code2: '/wechat/auth_code2/',
+	user_info: '/account/user-info/'
 }
 
 const app = {
     activity: '/app/activity/',
     activity_amap: '/app/activity-amap/',
     activity_ticket: '/app/activity-ticket/',
-	payment_pay: '/payment/pay/'
+	payment_pay: '/payment/pay-weix/'
 }
 
 /*
@@ -74,6 +75,15 @@ export function authorizationRegister(index = null) {
 export function wechatAuthCode2(index = null) {
     if (index) return auth.wechat_auth_code2 + index + '/'
     return auth.wechat_auth_code2
+}
+
+/*
+ * 微信获取openid
+ * @url /account/authorization-register/
+ * @param {Number} index 接口索引 */
+export function userInfo(index = null) {
+    if (index) return auth.user_info + index + '/'
+    return auth.user_info
 }
 /*
  * 活动信息

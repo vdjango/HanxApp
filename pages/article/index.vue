@@ -6,7 +6,7 @@
 			<view class="u-text-left u-relative" slot="body">
 				<!--首图-->
 				<view class="u-body-item u-flex u-border-bottom u-col-between u-p-t-0 u-margin-4">
-					<image class="details-image u-skeleton-fillet" :src="contextResults.images_682x342" mode="aspectFill"></image>
+					<image class="details-image u-skeleton-fillet" :src="contextResults.images" mode="aspectFill"></image>
 				</view>
 				<!--首图-->
 				
