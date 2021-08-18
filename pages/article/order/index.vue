@@ -297,6 +297,7 @@
 						userid: this.user.userid, 
 						openid: this.user.openid, 
 						trade_no: this.specSelected.data.id,
+						activity_id: this.articleContext.id,
 						money: this.specSelected.data.money,
 						name: this.specSelected.data.name,
 						number: this.specSelected.number
