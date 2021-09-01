@@ -1,6 +1,6 @@
 <template>
 	<view class="ticket u-skeleton">
-		
+		<u-top-tips ref="uTips"></u-top-tips>
 		<view v-if="loading">
 			<u-card v-for="index in [1, 2, 3, 4]" :key="'index'+index"
 			:head-border-bottom="false" :show-head="false" class="">
@@ -29,10 +29,10 @@
 				<view class="" slot="body">
 					<view class="u-body-item u-relative u-col-between u-p-t-0">
 						<view class="u-body-item-title u-line-2 u-font-30 ticket-name">{{item.name}}</view>
-						<view class="u-body-item-title u-line-2 u-font-13 u-row-left u-text-right ticket-number">剩余 {{item.num}} 张</view>
+						<!-- <view class="u-body-item-title u-line-2 u-font-13 u-row-left u-text-right ticket-number">剩余 {{item.num}} 张</view> -->
 					</view>
 					<view class="u-body-item u-flex u-row-between u-p-b-0 u-padding-35 color-type-success">
-						<view class="u-body-item-title u-line-2 u-font-40 ticket-money">¥ {{ money_tole(item.money) }}</view>
+						<view class="u-body-item-title u-line-2 u-font-40 ticket-money">¥ {{ money_tole(item.money) }}元</view>
 					</view>
 				</view>
 				<view v-if="election === index" fclass="u-flex" slot="foot">
@@ -54,20 +54,20 @@
 			</view>
 		</u-modal>
 		
-		<u-modal v-model="pay_success" @confirm="pay_confirm" content="已成功购票，后续请留意主页票务选项（后期增加）" title="成功" confirm-text="完成">
+		<u-modal v-model="pay_success" @confirm="pay_confirm" :content="out_trade_no.content" :title="out_trade_no.title" :confirm-text="out_trade_no.confirm_text">
 		</u-modal>
 		
 		<u-modal v-model="userInfoText.loading" @confirm="confirmUserInfo" :async-close="true" ref="uModalUserInfo">
 			<view class="slot-content">
 				<u-form :model="userInfoText" ref="uForm">
 						<u-form-item label="姓名" prop="full_name">
-							<u-input v-model="userInfoText.full_name" />
+							<u-input v-model="userInfoText.full_name" placeholder="请输入身份证真实姓名" />
 						</u-form-item>
 						<u-form-item label="身份证号" prop="certificates_no">
-							<u-input v-model="userInfoText.certificates_no" placeholder="请确保身份证号正确" />
+							<u-input v-model="userInfoText.certificates_no" placeholder="请输入真实的身份证号" />
 						</u-form-item>
 						<u-form-item label="手机号" prop="mobile">
-							<u-input v-model="userInfoText.mobile" placeholder="请确保手机号正确" />
+							<u-input v-model="userInfoText.mobile" placeholder="请输入真实的手机号" />
 						</u-form-item>
 					</u-form>
 			</view>
@@ -91,12 +91,33 @@
 		data() {
 			return {
 				articleContext: {},
-				contextResults: {
+				contextResults: {  // 票种信息
 					results: []
+				},
+				out_trade_no: { // 已经下单的订单信息
+					title: '成功',
+					content: '已成功购票，后续请留意主页票务选项（后期增加）',
+					confirm_text: '完成',
+					count: 1,
+					next: null,
+					previous: null,
+					results: [
+						{
+							"out_trade_no": "416f733ec23ea68c7ba635dd77fe20",
+							"status": 1,
+							"trade_no": 2,
+							"openid": "ovil75JE6yfeDfp6fqYa8rt67fQ4",
+							"prepay_id": "wx2522254915595197f40391dbd0ffe80000",
+							"name": "测试1",
+							"number": 1,
+							"money": 1,
+							"userid": 2
+						}
+					]
 				},
 				election: 0,
 				loading: true, // 是否显示骨架屏组件
-				specSelected: {
+				specSelected: {  // 下单的票种信息
 					number: 1,
 					data: {
 						id: null,
@@ -160,6 +181,7 @@
 			}
 		},
 		onLoad(options) {
+			uni.hideShareMenu()
 			const activityId = options.id
 			const activityName = options.title
 			this.articleContext.id = activityId
@@ -198,23 +220,60 @@
 				user: this.user.userid
 			}).then((response) => {
 				console.log('验证通过', response)
-				if(response.results.length < 1){
-					uni.showToast({
-						title: '请添加用户信息'
+				if(response.results.length < 1){ 
+					this.$refs.uTips.show({
+						title: 'warning',
+						type: 'success',
+						duration: '5000'
 					})
 					setTimeout(() => {
 						this.userInfoText.loading = true
 					}, 100)
-				} else {
-					uni.showToast({
-						title: '获取用户信息成功'
+				} else { 
+					this.$refs.uTips.show({
+						title: '获取用户信息成功',
+						type: 'success',
+						duration: '2300'
 					})
+					
+					// 获取用户订单信息
+					axios.payInfo('GET', {
+						openid: this.user.openid,
+						userid: this.user.userid,
+						trade_no__activity_key: this.articleContext.id,
+						status: 0
+					}).then((response)=>{
+						this.out_trade_no = response
+						this.out_trade_no.title = '成功'
+						this.out_trade_no.content = '已成功购票，后续请留意主页票务选项（后期增加）'
+						this.out_trade_no.confirm_text = '完成'
+						this.out_trade_no.count = response.count
+						this.out_trade_no.next = response.next
+						this.out_trade_no.previous = response.previous
+						this.out_trade_no.results = response.results
+						setTimeout(()=> {
+							this.loading = false
+						}, 100)
+						console.log('response', this.out_trade_no.results.length)
+						if (this.out_trade_no.results.length > 0) {
+							let out_trade_no_length = 0
+							for (let i in this.out_trade_no.results){
+								out_trade_no_length = out_trade_no_length + this.out_trade_no.results[i].number
+							}
+							this.out_trade_no.title = '已有成功购票记录'
+							this.out_trade_no.content = '您已成功购票，购买了 ' + out_trade_no_length + ' 张门票'
+							this.out_trade_no.confirm_text = '继续'
+							this.pay_success = true
+						}
+					})
+					
 				}
-				
 			}).catch(()=>{
-				uni.showToast({
-					title: '获取用户信息失败。'
-				});
+				this.$refs.uTips.show({
+					title: '获取用户信息成功',
+					type: 'error',
+					duration: '5000'
+				})
 			}).finally(()=>{
 			})
 			
@@ -260,13 +319,18 @@
 							mobile: this.userInfoText.mobile
 						}).then((response) => {
 							console.log('验证通过')
-							uni.showToast({
-								title: '用户信息添加成功'
+							this.$refs.uTips.show({
+								title: '用户信息添加成功',
+								type: 'success',
+								duration: '2300'
 							})
 						}).catch(()=>{
-							uni.showToast({
-								title: '用户信息添加失败，请不要购票。'
-							});
+							this.$refs.uTips.show({
+								title: '用户信息添加失败，请不要购票。',
+								type: 'error',
+								duration: '5000'
+							})
+							
 						}).finally(()=>{
 							setTimeout(() => {
 								this.userInfoText.loading = false
@@ -283,15 +347,20 @@
 				
 			},
 			pay_confirm(){
-				uni.navigateBack({
-				    delta: 1,
-				    animationType: 'pop-out',
-				    animationDuration: 200
-				});
+				if (this.out_trade_no.confirm_text != '继续'){
+					uni.navigateBack({
+					    delta: 1,
+					    animationType: 'pop-out',
+					    animationDuration: 200
+					});
+				}
 			},
 			WPay(){
 				// 支付
 				console.log('支付')
+				this.out_trade_no.title = '成功'
+				this.out_trade_no.content = '已成功购票，后续请留意主页票务选项（后期增加）'
+				this.out_trade_no.confirm_text = '完成'
 				if (this.user.openid) {
 					axios.paymentPay('POST', {
 						userid: this.user.userid, 
@@ -319,16 +388,21 @@
 							},
 							fail: function(res) {
 								console.log('支付失败：', res)
-							},
-							// complete
-							
-							// setTimeout(() => {
-							// 	this.pay_ = false;
-							// }, 100)
+								this.$refs.uTips.show({
+									title: '支付失败: ' + res,
+									type: 'error',
+									duration: '30000'
+								})
+							}
 						})
 					})
 				} else {
 					console.log('未登录')
+					this.$refs.uTips.show({
+						title: '请登录',
+						type: 'warning',
+						duration: '2300'
+					})
 				}
 				
 			},
@@ -405,10 +479,12 @@
 							uni.showToast({
 								title: '登陆成功'
 							})
-						}).catch(()=>{
-							uni.showToast({
-								title: '接口错误.request'
-							});
+						}).catch(()=>{ 
+							this.$refs.uTips.show({
+								title: '接口错误.request',
+								type: 'error',
+								duration: '2300'
+							})
 						}).finally(()=>{
 							setTimeout(function () {
 								uni.hideLoading();
@@ -422,7 +498,7 @@
 				/**
 				 * 价格 分转元
 				 */
-				return parseInt(money)/10
+				return parseInt(money) /100
 			}
 		}
 	}

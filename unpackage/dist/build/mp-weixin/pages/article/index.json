@@ -1,0 +1,16 @@
+{
+  "navigationBarTextStyle": "black",
+  "navigationBarTitleText": "",
+  "onReachBottomDistance": 50,
+  "usingComponents": {
+    "u-card": "/node-modules/uview-ui/components/u-card/u-card",
+    "u-icon": "/node-modules/uview-ui/components/u-icon/u-icon",
+    "u-no-network": "/node-modules/uview-ui/components/u-no-network/u-no-network",
+    "u-skeleton": "/node-modules/uview-ui/components/u-skeleton/u-skeleton",
+    "x-avatar": "/components/avatar/index",
+    "x-navbar": "/components/navbar/index",
+    "x-status": "/components/status/index",
+    "x-tabber": "/components/tabber/index",
+    "read-more": "/components/read-more/u-read-more"
+  }
+}

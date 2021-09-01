@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-top-tips": "/node-modules/uview-ui/components/u-top-tips/u-top-tips",
+    "u-card": "/node-modules/uview-ui/components/u-card/u-card",
+    "u-icon": "/node-modules/uview-ui/components/u-icon/u-icon",
+    "u-cell-group": "/node-modules/uview-ui/components/u-cell-group/u-cell-group",
+    "u-cell-item": "/node-modules/uview-ui/components/u-cell-item/u-cell-item",
+    "u-number-box": "/node-modules/uview-ui/components/u-number-box/u-number-box",
+    "u-modal": "/node-modules/uview-ui/components/u-modal/u-modal",
+    "x-tabber": "/components/tabber/index"
+  }
+}

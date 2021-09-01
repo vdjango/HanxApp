@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App'
 import uView from "uview-ui"
 import store from '@/store/index.js'  
+import share from '@/utils/share.js'
+Vue.mixin(share)
 
 Vue.use(uView);
 

@@ -11,7 +11,8 @@ import {
     activityTicket,
 	paymentPay,
 	wechatAuthCode2,
-	userInfo
+	userInfo,
+	payInfo
 } from './restful'
 
 const request = axios();
@@ -166,6 +167,18 @@ export default {
 		 */
 		paymentPay: function (method = 'GET', data = {}, index = null, pagination = {}) {
 		    return Axios(paymentPay(index), method, this.Data(data, pagination))
+		},
+		
+		/**
+		 * 微信支付订单信息查询
+		 * @param method 请求方式
+		 * @param data 请求数据
+		 * @param index 数据索引
+		 * @param pagination 分页器
+		 * @returns {Promise<unknown>}
+		 */
+		payInfo: function (method = 'GET', data = {}, index = null, pagination = {}) {
+		    return Axios(payInfo(index), method, this.Data(data, pagination))
 		}
 }
 

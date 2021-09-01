@@ -1,5 +1,5 @@
 {
-    "name" : "huaxiaApp",
+    "name" : "汉道行",
     "appid" : "",
     "description" : "",
     "versionName" : "1.0.0",
@@ -58,8 +58,16 @@
         "appid" : "wx49d0b60fd6574a12",
         "setting" : {
             "urlCheck" : false,
-            "minified" : true
+            "minified" : true,
+            "postcss" : true
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {}
+    },
+    "mp-qq" : {
+        "setting" : {
+            "postcss" : true,
+            "minified" : true
+        }
     }
 }

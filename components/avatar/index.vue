@@ -17,7 +17,8 @@
 					</view>
 				</navigator>
 					<view class="x-else-user-font">
-						<text>{{dateday}} 天前发布</text>
+						<text v-if="dateday > 0">{{dateday}} 天前发布</text>
+						<text v-else>{{dateday}}</text>
 					</view>
 			</view>
 			<view class="x-else-user-tabs">
@@ -59,7 +60,7 @@
 			},
 			dateday: {
 				type: [Number, String],
-				default: 12
+				default: '当天发布'
 			}
 		},
 		components: {

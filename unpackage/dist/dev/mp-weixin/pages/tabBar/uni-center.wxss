@@ -5,8 +5,7 @@
 	font-style: normal;
 	src: url('https://at.alicdn.com/t/font_984210_5cs13ndgqsn.ttf') format('truetype');
 }
-page,
-view {
+.page-view {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
@@ -23,12 +22,18 @@ uni-button:after {
 	border: unset !important;
 }
 .center {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
 	        flex-direction: column;
 }
 .logo {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
 	width: 750rpx;
 	height: 240rpx;
 	padding: 50rpx;
@@ -47,11 +52,17 @@ uni-button:after {
 	opacity: 0.8;
 }
 .logo-img {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
 	width: 120rpx;
 	height: 120rpx;
 	border-radius: 150rpx;
 }
 .logo-title {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
 	/* height: 150upx; */
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
@@ -93,6 +104,9 @@ uni-button:after {
 	margin-left: 20rpx;
 }
 .center-list {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
 	background-color: #FFFFFF;
 	margin-top: 20rpx;
 	width: 750rpx;
@@ -102,6 +116,9 @@ uni-button:after {
 	        flex-direction: column;
 }
 .center-list-item {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
 	height: 90rpx;
 	width: 750rpx;
 	-webkit-box-sizing: border-box;

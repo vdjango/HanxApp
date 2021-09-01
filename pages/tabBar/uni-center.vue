@@ -1,66 +1,93 @@
 <template>
-	<view class="center">
-		<view class="logo" @click="getUserInfo" v-if="!UserInfo.login">
-			<view :hover-class="!UserInfo.login ? 'logo-hover' : ''" >
-				<image class="logo-img" :src="UserInfo.avatarUrl"></image>
-				<view class="logo-title">
-					<text class="uer-name">您未登录</text>
+	<view>
+		<view class="page-view center">
+			<view class="page-view logo" @click="getUserInfo" v-if="!UserInfo.login">
+				<view :hover-class="!UserInfo.login ? 'logo-hover' : ''" class="page-view">
+					<image class="page-view logo-img" :src="UserInfo.avatarUrl"></image>
+					<view class="page-view logo-title">
+						<text class="uer-name">您未登录</text>
+					</view>
+				</view>
+			</view>
+			<view class="page-view logo" v-else>
+				<view :hover-class="!UserInfo.login ? 'logo-hover' : ''" class="page-view">
+					<image class="page-view logo-img" :src="UserInfo.avatarUrl"></image>
+					<view class="page-view logo-title">
+						<text class="uer-name">{{UserInfo.nickName}}</text>
+					</view>
+				</view>
+			</view>
+			<!-- <view class="center-list">
+				<view class="center-list-item border-bottom">
+					<text class="list-icon">&#xe60f;</text>
+					<text class="list-text">帐号管理</text>
+					<text class="navigat-arrow">&#xe65e;</text>
+				</view>
+				<view class="center-list-item">
+					<text class="list-icon">&#xe639;</text>
+					<text class="list-text">新消息通知</text>
+					<text class="navigat-arrow">&#xe65e;</text>
+				</view>
+			</view> -->
+			<view class="center-list">
+				<!-- <view class="center-list-item border-bottom">
+					<text class="list-icon">&#xe60f;</text>
+					<text class="list-text">帐号管理</text>
+					<text class="navigat-arrow">&#xe65e;</text>
+				</view> -->
+				<view class="center-list-item"> 
+					<u-icon class="list-icon" name="kefu-ermai"></u-icon>
+					<open-button class="list-text" open-type="contact" width='100%'>客服服务</open-button>
+					<text class="navigat-arrow">&#xe65e;</text>
+				</view>
+			</view>
+			<view class="center-list">
+				<view class="center-list-item border-bottom">
+					<u-icon class="list-icon" name="edit-pen"></u-icon>
+					<open-button class="list-text" open-type="feedback" width='100%'>帮助与反馈</open-button>
+					<text class="navigat-arrow">&#xe65e;</text>
+				</view>
+				<!-- <view class="center-list-item">
+					<u-icon class="list-icon" name="file-text"></u-icon>
+					<text class="list-text">服务条款及隐私</text>
+					<text class="navigat-arrow">&#xe65e;</text>
+				</view> -->
+			</view>
+			<!-- <view class="center-list">
+				<view class="center-list-item"> 
+					<u-icon class="list-icon" name="error-circle"></u-icon>
+					<text class="list-text">关于应用</text>
+					<text class="navigat-arrow">&#xe65e;</text>
+				</view>
+			</view> -->
+			<view class="center-list" v-if="UserInfo.login">
+				<view class="center-list-item">
+					<u-icon class="list-icon" name="arrow-leftward"></u-icon>
+					<open-button class="list-text" width='100%' @click="outLogin">退出登陆</open-button>
+					<text class="navigat-arrow">&#xe65e;</text>
 				</view>
 			</view>
 		</view>
-		<view class="logo" v-else>
-			<view :hover-class="!UserInfo.login ? 'logo-hover' : ''" >
-				<image class="logo-img" :src="UserInfo.avatarUrl"></image>
-				<view class="logo-title">
-					<text class="uer-name">{{UserInfo.nickName}}</text>
-				</view>
-			</view>
-		</view>
-		<!-- <view class="center-list">
-			<view class="center-list-item border-bottom">
-				<text class="list-icon">&#xe60f;</text>
-				<text class="list-text">帐号管理</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-			<view class="center-list-item">
-				<text class="list-icon">&#xe639;</text>
-				<text class="list-text">新消息通知</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-		</view> -->
-		<view class="center-list">
-			<view class="center-list-item border-bottom">
-				<text class="list-icon">&#xe60b;</text>
-				<text class="list-text">帮助与反馈</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-			<view class="center-list-item">
-				<text class="list-icon">&#xe65f;</text>
-				<text class="list-text">服务条款及隐私</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-		</view>
-		<view class="center-list">
-			<view class="center-list-item">
-				<text class="list-icon">&#xe614;</text>
-				<text class="list-text">关于应用</text>
-				<text class="navigat-arrow">&#xe65e;</text>
-			</view>
-		</view>
+		
+		<u-modal v-model="show" :title-style="{color: 'red'}" @confirm="confirmLogOut" confirm-text="退出" :async-close="true" content="即将退出登陆" show-cancel-button>
+		</u-modal>
 	</view>
+	
 </template>
 
 <script>
 	import store from '@/store/index.js' 
 	import axios from '@/axios/index.js'
+	import openButton from '@/components/open-button/index.vue'
 	
 
 	export default {
 		data() {
 			return {
+				show: false,
 				UserInfo: {
 					login: false,
-					avatarUrl: "https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIVUHJYDoYklJFAIIdmiaQIrfXhSHXUzW9n6Ll06brS7m0xU9FYc8A9ibbCickaicics5mUHvAAWib9iabibQ/132",
+					avatarUrl: require('@/static/loginout.jpeg'),
 					city: "门头沟",
 					country: "中国",
 					gender: 1,
@@ -76,6 +103,7 @@
 			}
 		},
 		onLoad() {
+			uni.hideShareMenu()
 			const user = store.getters['getUser']
 			
 			if (user.userid) {
@@ -92,6 +120,9 @@
 				this.UserInfo.nickName = user.nickName
 				this.UserInfo.province = user.province
 			}
+		},
+		components:{
+			'open-button': openButton
 		},
 		methods: {
 			setData:function(obj){
@@ -199,6 +230,23 @@
 					}
 				})
 			},
+			outLogin(){
+				/**
+				 * 登出
+				 */
+				this.show = true 
+			},
+			confirmLogOut(){
+				/**
+				 * 登出
+				 */
+				setTimeout(() => {
+					store.commit('logout')
+					this.show = false;
+					// 如果不想关闭，而单是清除loading状态，需要通过ref手动调用方法
+					// this.$refs.uModal.clearLoading();
+				}, 300)
+			}
 		},
 		computed: {
 			getLogin() {
@@ -229,7 +277,6 @@
 				this.UserInfo.province = user.province
 			}
 		}
-	
 	}
 </script>
 
@@ -241,8 +288,7 @@
 		src: url('https://at.alicdn.com/t/font_984210_5cs13ndgqsn.ttf') format('truetype');
 	}
 
-	page,
-	view {
+	.page-view {
 		display: flex;
 	}
 
@@ -260,10 +306,12 @@
 	}
 
 	.center {
+		display: flex;
 		flex-direction: column;
 	}
 
 	.logo {
+		display: flex;
 		width: 750upx;
 		height: 240upx;
 		padding: 50upx;
@@ -278,12 +326,14 @@
 	}
 
 	.logo-img {
+		display: flex;
 		width: 120upx;
 		height: 120upx;
 		border-radius: 150upx;
 	}
 
 	.logo-title {
+		display: flex;
 		/* height: 150upx; */
 		flex: 1;
 		align-items: center;
@@ -313,6 +363,7 @@
 	}
 
 	.center-list {
+		display: flex;
 		background-color: #FFFFFF;
 		margin-top: 20upx;
 		width: 750upx;
@@ -320,6 +371,7 @@
 	}
 
 	.center-list-item {
+		display: flex;
 		height: 90upx;
 		width: 750upx;
 		box-sizing: border-box;

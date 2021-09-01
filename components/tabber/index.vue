@@ -20,12 +20,14 @@
 			</view>
 		 
 			<view  v-else v-for="(item,index) in list" class="u-tabbar__content__item" :style="{backgroundColor: bgColor}">
+				
 				<view class="u-tabbar__content__item__button">
-					<u-icon :size="iconSize" :name="item.icon"></u-icon>
+					<open-button @click="clickContext(item.name)" :open-type="item.openType"><u-icon :size="iconSize" :name="item.icon" style="color: #606266d9;"></u-icon></open-button>
 				</view>
 				<view class="u-tabbar__content__item__text">
-					<text class="u-line-1 u-font-xs">{{item.name}}</text>
+					<open-button @click="clickContext(item.name)" :open-type="item.openType"><text class="u-line-1 u-font-xs">{{item.name}}</text></open-button>
 				</view>
+				
 			</view>
 			<view v-if="name && skeleton===false" class="u-tabbar__content__item" :style="{backgroundColor: bgColor}">
 				<u-button style="width: 230px;" :custom-style="{width: 'inherit'}" shape="circle" type="primary" :ripple="true" size="medium" @click="clickEnroll">{{name}}</u-button>
@@ -37,6 +39,8 @@
 </template>
 
 <script>
+	import openButton from '@/components/open-button/index.vue'
+	
 	export default {
 		props: {
 			// 显示与否
@@ -122,6 +126,9 @@
 				pageUrl: '', // 当前页面URL
 			}
 		},
+		components:{
+			'open-button': openButton
+		},
 		created() {
 			// 是否隐藏原生tabbar
 			if(this.hideTabBar) uni.hideTabBar();
@@ -171,7 +178,10 @@
 			async clickEnroll() {
 				// 报名
 				this.$emit('enroll', this.title)
-				
+			},
+			async clickContext(value) {
+				// 报名
+				this.$emit('context', value)
 			},
 			async clickHandler(index) {
 				if(this.beforeSwitch && typeof(this.beforeSwitch) === 'function') {
@@ -298,7 +308,7 @@
 				
 				&__button {
 					position: absolute;
-					top: 14rpx;
+					top: 24rpx;
 					left: 55%;
 					transform: translateX(-50%);
 				}
@@ -308,7 +318,7 @@
 					font-size: 26rpx;
 					line-height: 28rpx;
 					position: absolute;
-					bottom: 14rpx;
+					bottom: 0rpx;
 					left: 55%;
 					transform: translateX(-50%);
 					width: 100%;

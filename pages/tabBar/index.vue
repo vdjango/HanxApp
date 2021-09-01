@@ -15,6 +15,7 @@
 					:username="item.user_name"
 					:applicants="item.user_attend_num"
 					:browse="item.browse"
+					:dateday="item.dateday"
 					:image_uri="item.images"
 					:title="item.name"
 					></card>
@@ -29,6 +30,7 @@
 					:username="item.user_name"
 					:applicants="item.user_attend_num"
 					:browse="item.browse"
+					:dateday="item.dateday"
 					:image_uri="item.images"
 					:title="item.name"
 					></card>
@@ -64,6 +66,12 @@
 					results: []
 				}
 			}
+		},
+		onPullDownRefresh(){
+			axios.activity('GET').then((res)=>{
+				this.dataResults = res
+				 uni.stopPullDownRefresh();
+			})
 		},
 		onLoad() {
 			axios.activity('GET').then((res)=>{

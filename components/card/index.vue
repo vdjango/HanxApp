@@ -20,7 +20,7 @@
 						<view class="tip">
 							<navigator :url="url" hover-class="none">
 								<image src="../../static/eye.png" mode="aspectFit"></image>
-								<text>{{applicants}}  人报名</text>
+								<!-- <text>{{applicants}}  人报名</text> -->
 							</navigator>
 						</view>
 						<view class="time">
@@ -64,7 +64,7 @@
 						</view>
 						<view class="time">
 							<!-- <u-count-to :start-val="0" :end-val="applicants"></u-count-to> -->
-							<text>{{applicants}} 人报名</text>
+							<!-- <text>{{applicants}} 人报名</text> -->
 						</view>
 					</view>
 				</view>
@@ -108,8 +108,8 @@
 				default: "junsi"
 			},
 			dateday: { // 多少天前发布
-				type: Number,
-				default: 12
+				type: [Number, String],
+				default: '当天发布'
 			},
 			applicants: { // 报名人数
 				type: Number,

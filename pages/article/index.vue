@@ -19,13 +19,13 @@
 				<!--活动信息-->
 				<view class="u-body-item u-flex u-row-between u-margin-top-10">
 					<view class="u-body-item-title u-line-2 u-font-xs u-tips-color u-skeleton-rect">{{contextResults.browse}} 浏览</view>
-					<view class="u-body-item-title u-line-2 u-font-xs u-tips-color u-skeleton-rect">{{contextResults.user_attend_num}} 报名</view>
+					<!-- <view class="u-body-item-title u-line-2 u-font-xs u-tips-color u-skeleton-rect">{{contextResults.user_attend_num}} 报名</view> -->
 				</view>
 				<!--活动信息-->
 				
 				<!--活动金额-->
 				<view class="u-body-item u-flex u-margin-top-26 u-text-left">
-					<view class="u-body-item-title u-line-2 u-font-19 u-type-warning-dark u-skeleton-rect">¥199~296 (未实现)</view>
+					<view class="u-body-item-title u-line-2 u-font-19 u-type-warning-dark u-skeleton-rect">¥ {{contextResults.price_range[0]/100}}~{{contextResults.price_range[1]/100}}元</view>
 				</view>
 				<!--活动金额-->
 				
@@ -78,7 +78,7 @@
 		<u-no-network></u-no-network>
 		<u-skeleton :loading="loading" :animation="true" bgColor="#FFF"></u-skeleton>
 		
-		<x-tabber v-if="user.openid" @enroll="enroll" :list="tabber" :skeleton="false"></x-tabber>
+		<x-tabber v-if="user.openid" @enroll="enroll" @context="enrollContext" :list="tabber" :skeleton="false"></x-tabber>
 		<x-tabber v-else name="登陆后才可以报名" :skeleton="false" @enroll="getUserInfo"></x-tabber>
 	</view>
 </template>
@@ -98,6 +98,14 @@
 		data() {
 			return {
 				loading: true,
+				//设置默认的分享参数
+				share:{
+				    title:'ALAPI',
+				    path:'/pages/index/index',
+				    imageUrl:'',
+				    desc:'',
+				    content:''
+				},
 				shadowStyle: {
 					backgroundImage: 'linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 80%)',
 					paddingTop: '150px',
@@ -106,7 +114,7 @@
 				},
 				tabber: [
 					{name: '首页', icon:'home'},
-					{name: '分享', icon:'share'}
+					{name: '分享', icon:'share', openType: 'share'}
 				],
 				contextResults: {
 					id: null,
@@ -184,11 +192,25 @@
 				this.contextResults = res
 				this.contextResults.start_date = DateMat(this.contextResults.start_date).format("yy/MM/dd hh:mm")
 				this.contextResults.end_date = DateMat(this.contextResults.end_date).format("yy/MM/dd hh:mm")
+				
+				this.share.title = res.name
+				this.share.content = res.context
+				this.share.imageUrl = res.images
+				this.share.desc = ''
+				this.share.path = pageRouter.article({
+					activityId: res.id,
+					image_uri: res.images,
+					title: res.name,
+					username: res.user_name,
+					dateday: res.dateday
+				})
 				setTimeout(()=> {
 					uni.hideLoading();
 					this.loading = false
 				}, 300)
 			})
+			
+			
 		},
 		props: {
 			tag: {
@@ -218,11 +240,22 @@
 				 * 立即报名
 				 */
 				uni.navigateTo({
-				    url: pageRouter.article_order({
+				    url: pageRouter.article_ticket({
 						'id': this.contextResults.id,
 						'title': this.contextResults.name
 					})
 				});
+			},
+			enrollContext(value){ 
+				if (value === '分享') {
+					console.log(value)
+					
+				} else if (value === '首页'){
+					console.log(value)
+					uni.switchTab({
+					    url: pageRouter.index()
+					})
+				}
 			},
 			getUserInfo(e) {
 				uni.getUserProfile({
@@ -328,6 +361,10 @@
 		width: 100%;
 		height: 402upx;
 		border-radius: 15upx;
+	}
+	
+	img {
+	    width: 100%;
 	}
 	
 	.rich-text {

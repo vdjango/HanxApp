@@ -1,0 +1,10 @@
+(global["webpackJsonp"]=global["webpackJsonp"]||[]).push([["components/card/index"],{"4f45":function(t,e,n){"use strict";n.r(e);var a=n("9093"),u=n("a6b4");for(var i in u)"default"!==i&&function(t){n.d(e,t,(function(){return u[t]}))}(i);n("7857");var r,c=n("f0c5"),l=Object(c["a"])(u["default"],a["b"],a["c"],!1,null,null,null,!1,a["a"],r);e["default"]=l.exports},7857:function(t,e,n){"use strict";var a=n("b532"),u=n.n(a);u.a},9093:function(t,e,n){"use strict";var a;n.d(e,"b",(function(){return u})),n.d(e,"c",(function(){return i})),n.d(e,"a",(function(){return a}));var u=function(){var t=this,e=t.$createElement;t._self._c},i=[]},a6b4:function(t,e,n){"use strict";n.r(e);var a=n("f395"),u=n.n(a);for(var i in a)"default"!==i&&function(t){n.d(e,t,(function(){return a[t]}))}(i);e["default"]=u.a},b532:function(t,e,n){},f395:function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var a=function(){n.e("components/tag/index").then(function(){return resolve(n("1738"))}.bind(null,n)).catch(n.oe)},u=function(){n.e("components/avatar/index").then(function(){return resolve(n("a1b5"))}.bind(null,n)).catch(n.oe)},i={data:function(){return{url:"/pages/article/index?activityId="+this.activityId+"&image_uri="+this.image_uri+"&title="+this.title+"&username="+this.username+"&dateday="+this.dateday+"&title="+this.title}},props:{activityId:{default:null},distribution:{type:Boolean,default:function(){return!0}},tag:{type:String,default:"进行中"},username:{type:String,default:"junsi"},dateday:{type:[Number,String],default:"当天发布"},applicants:{type:Number,default:2945},browse:{type:Number,default:1},image_uri:{default:"/static/1.jpg"},title:{default:"汉服运动X周年庆典 汉服运动"}},components:{xTag:a,xAvatar:u}};e.default=i}}]);
+;(global["webpackJsonp"] = global["webpackJsonp"] || []).push([
+    'components/card/index-create-component',
+    {
+        'components/card/index-create-component':(function(module, exports, __webpack_require__){
+            __webpack_require__('543d')['createComponent'](__webpack_require__("4f45"))
+        })
+    },
+    [['components/card/index-create-component']]
+]);

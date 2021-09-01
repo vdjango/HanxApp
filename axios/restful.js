@@ -29,7 +29,8 @@ const app = {
     activity: '/app/activity/',
     activity_amap: '/app/activity-amap/',
     activity_ticket: '/app/activity-ticket/',
-	payment_pay: '/payment/pay-weix/'
+	payment_pay: '/payment/pay-weix/',
+	pay_info: '/payment/pay-info/'
 }
 
 /*
@@ -122,4 +123,14 @@ export function activityTicket(index = null) {
 export function paymentPay(index = null) {
     if ((index && index !== 'null')) return app.payment_pay + index + '/'
     return app.payment_pay
+}
+
+/**
+ * 微信支付
+ * @param index
+ * @returns {string}
+ */
+export function payInfo(index = null) {
+    if ((index && index !== 'null')) return app.pay_info + index + '/'
+    return app.pay_info
 }

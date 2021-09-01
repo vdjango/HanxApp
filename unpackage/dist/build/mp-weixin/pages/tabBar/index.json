@@ -1,0 +1,13 @@
+{
+  "navigationBarTextStyle": "black",
+  "navigationBarTitleText": "首页",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
+  "usingComponents": {
+    "indexheader": "/components/index",
+    "ustatus": "/components/status/index",
+    "wuc-tab": "/components/wuc-tab/wuc-tab",
+    "card": "/components/card/index",
+    "x-navbar": "/components/navbar/index"
+  }
+}

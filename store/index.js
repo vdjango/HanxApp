@@ -9,9 +9,8 @@ const store = new Vuex.Store({
 			token: null,
 			userid: null,
 			openid: null,
-				
 			login: null,
-			avatarUrl: null,
+			avatarUrl: require('@/static/loginout.jpeg'),
 			city: null,
 			country: null,
 			gender: null,
@@ -19,9 +18,26 @@ const store = new Vuex.Store({
 			nickName: null,
 			province: null
 		},
+		article: {
+			ticket: {
+				list: {
+					ticket_list: {
+						ticketid: 1,
+						name: "测试"
+					}
+				},
+				user_list: {
+					user:{
+						userid: null,
+						full_name: null
+					}
+					
+				}
+			}
+		}
         
     },  
-    mutations: {  
+    mutations: {
         login(state, user) {
 			/**
 			 * 登陆
@@ -71,7 +87,7 @@ const store = new Vuex.Store({
 			state.user.openid = null
 				
 			state.user.login = false
-			state.user.avatarUrl = null
+			state.user.avatarUrl = require('@/static/loginout.jpeg')
 			state.user.city = null
 			state.user.country = null
 			state.user.gender = null
@@ -85,7 +101,7 @@ const store = new Vuex.Store({
 					userid: null,
 					openid: null,
 						
-					login: null,
+					login: false,
 					avatarUrl: null,
 					city: null,
 					country: null,
@@ -98,7 +114,34 @@ const store = new Vuex.Store({
 			        console.log('setStorage.user');
 			    }
 			})
-        }  
+        },
+		ticketUserId(state, userid){
+			/**
+			 * 活动购票选择的用户信息
+			 */
+			console.log('state', userid)
+			state.article.ticket.user_list.user.userid = userid
+			// state.article.ticket.user_list.user.full_name = item.full_name
+		},
+		ticketUserFullName(state, full_name){
+			/**
+			 * 活动购票选择的用户信息
+			 */
+			console.log('state', full_name)
+			state.article.ticket.user_list.user.full_name = full_name
+		},
+		ticketListId(state, ticketid){
+			/**
+			 * 活动购票选择的用户信息
+			 */
+			state.article.ticket.list.ticket_list.ticketid = ticketid
+		},
+		ticketListName(state, name){
+			/**
+			 * 活动购票选择的用户信息
+			 */
+			state.article.ticket.list.ticket_list.name = name
+		}
     },
 	getters: {
 		getUser(state){
@@ -109,6 +152,30 @@ const store = new Vuex.Store({
 		},
 		getLogin(state){
 			return state.user.login
+		},
+		getTicketUserID(state){
+			/**
+			 * 获取活动购票选择的用户信息ID
+			 */
+			return state.article.ticket.user_list.user.userid
+		},
+		getTicketUserFullName(state){
+			/**
+			 * 获取活动购票选择的用户信息
+			 */
+			return state.article.ticket.user_list.user.full_name
+		},
+		getTicketListID(state){
+			/**
+			 * 获取活动购票选择的票种信息ID
+			 */
+			return state.article.ticket.list.ticket_list.ticketid
+		},
+		getTicketListName(state){
+			/**
+			 * 获取活动购票选择的票种信息
+			 */
+			return state.article.ticket.list.ticket_list.name
 		}
 	}
 })
